@@ -33,8 +33,26 @@
           nixpkgs = inputs.nixpkgs;
           imports = [(import ./kernels.nix)];
         });
+        pkgs = inputs.nixpkgs.legacyPackages.${system};
       in rec {
-        packages = {inherit jupyterlab;};
+        packages = {
+          inherit jupyterlab;
+          merge = pkgs.writeShellApplication {
+            name = "merge";
+
+            runtimeInputs = with pkgs; [
+              findutils
+              pandoc
+              texliveFull
+              python311Packages.nbmerge
+            ];
+
+            text = ''
+              dir=$(realpath "$1");
+              find . -type f -not -path "$dir/.*" -name '*.ipynb' -print0 | xargs -0 nbmerge --output "$dir"/"$(basename "$dir")"_merged.ipynb
+            '';
+          };
+        };
         packages.default = jupyterlab;
         apps.default.program = "${jupyterlab}/bin/jupyter-lab";
         apps.default.type = "app";

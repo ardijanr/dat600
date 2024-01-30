@@ -43,6 +43,7 @@
             runtimeInputs = with pkgs; [
               findutils
               pandoc
+
               texliveFull
               python311Packages.nbmerge
             ];

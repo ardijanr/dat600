@@ -1,6 +1,8 @@
 {pkgs, ...}: {
-  jupyterlab.runtimePackages = [
-    pkgs.pandoc-cli
+  jupyterlab.runtimePackages = with pkgs; [
+    pandoc-cli
+    texliveFull
+    pandoc
     ];
 
   kernel.python.dat600 = {
@@ -10,6 +12,7 @@
       ps.matplotlib
       ps.ipykernel
       ps.nbmerge
+      ps.requests
     ];
   };
   kernel.rust."example".enable = true;

@@ -28,12 +28,12 @@
     ]
     (
       system: let
+        pkgs = inputs.nixpkgs.legacyPackages.${system};
         inherit (jupyenv.lib.${system}) mkJupyterlabNew;
         jupyterlab = mkJupyterlabNew ({...}: {
           nixpkgs = inputs.nixpkgs;
           imports = [(import ./kernels.nix)];
         });
-        pkgs = inputs.nixpkgs.legacyPackages.${system};
       in rec {
         packages = {
           inherit jupyterlab;
@@ -43,7 +43,6 @@
             runtimeInputs = with pkgs; [
               findutils
               pandoc
-
               texliveFull
               python311Packages.nbmerge
             ];

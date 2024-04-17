@@ -11,6 +11,7 @@
       ps.numpy
       ps.matplotlib
       ps.ipykernel
+      ps.pulp
       ps.nbmerge
       ps.requests
     ];
